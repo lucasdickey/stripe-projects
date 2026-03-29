@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "project": {
+    "merchantId": "acct_1RlzywDvWdnpmOST",
+    "merchantDisplayName": null,
+    "projectId": "project_61UPVWelKAbeh5wHE16SvNwISGSQOMCtRf2PtuBcm6oS",
+    "projectName": "stripe-projects-feedback-claude",
+    "initializedAt": "2026-03-29T00:51:08.535Z"
+  },
+  "providers": {},
+  "resources": {}
+}

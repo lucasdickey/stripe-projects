@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(stripe projects init:*)"
+      "WebFetch(domain:docs.stripe.com)",
+      "Bash(stripe projects init:*)",
+      "Bash(stripe projects:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

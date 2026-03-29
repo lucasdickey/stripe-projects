@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "project": {
+    "merchantId": "acct_1RlzywDvWdnpmOST",
+    "merchantDisplayName": null,
+    "projectId": "project_61UPVbZAPRxVAvu8K16SvNwISGSQOMCtRf2PtuBcm43s",
+    "projectName": "stripe-projects-feeedback-cursor",
+    "initializedAt": "2026-03-29T00:56:14.210Z"
+  },
+  "providers": {},
+  "resources": {}
+}

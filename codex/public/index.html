@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stripe Projects Feedback Console</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Stripe Projects Feedback</p>
+        <h1>Collect suggestions, surface themes, and chat with the backlog.</h1>
+        <p class="lede">
+          One page for intake, summaries, search-by-conversation, and a paginated view of every submission.
+        </p>
+      </header>
+
+      <section class="panel summary-panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Top 10 categories</p>
+            <h2>Request themes</h2>
+          </div>
+          <div id="summary-total" class="summary-total">0 submissions</div>
+        </div>
+        <div id="summary-grid" class="summary-grid"></div>
+      </section>
+
+      <section class="intake-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Submit feedback</p>
+              <h2>Add a suggestion</h2>
+            </div>
+          </div>
+          <form id="feedback-form" class="stack">
+            <label>
+              Message
+              <textarea id="message" name="message" rows="6" maxlength="2000" placeholder="Describe the Stripe Projects improvement you want to see." required></textarea>
+            </label>
+            <label>
+              Twitter handle
+              <input id="twitterHandle" name="twitterHandle" type="text" placeholder="@handle" />
+            </label>
+            <label>
+              Agent used with Projects
+              <input id="agent" name="agent" type="text" placeholder="Codex, Claude, Warp, etc." />
+            </label>
+            <button type="submit">Submit feedback</button>
+            <p id="form-status" class="status"></p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Chat with submissions</p>
+              <h2>Feedback assistant</h2>
+            </div>
+          </div>
+          <form id="chat-form" class="stack">
+            <label>
+              Question
+              <textarea id="question" name="question" rows="4" placeholder="What are people asking for around environment variables?" required></textarea>
+            </label>
+            <button type="submit">Ask</button>
+          </form>
+          <div id="chat-answer" class="chat-answer muted">Ask a question to search across the submitted feedback.</div>
+          <div id="chat-matches" class="chat-matches"></div>
+        </section>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">All submissions</p>
+            <h2>Latest feedback</h2>
+          </div>
+          <div class="pager">
+            <button id="prev-page" type="button">Previous</button>
+            <span id="page-indicator">Page 1</span>
+            <button id="next-page" type="button">Next</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Created</th>
+                <th>Message</th>
+                <th>Twitter</th>
+                <th>Agent</th>
+              </tr>
+            </thead>
+            <tbody id="feedback-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+  </html>

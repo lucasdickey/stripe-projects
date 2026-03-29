@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "providers": {
+    "chroma": {
+      "name": "Chroma"
+    },
+    "posthog": {
+      "name": "PostHog"
+    },
+    "railway": {
+      "name": "Railway"
+    }
+  },
+  "resources": {
+    "posthog-analytics": {
+      "name": "posthog-analytics",
+      "providerName": "PostHog",
+      "serviceId": "analytics"
+    },
+    "railway-plan": {
+      "name": "railway-plan",
+      "providerName": "Railway",
+      "serviceId": "free"
+    },
+    "railway-postgres": {
+      "name": "railway-postgres",
+      "providerName": "Railway",
+      "serviceId": "postgres"
+    }
+  }
+}
