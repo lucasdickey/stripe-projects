@@ -33,7 +33,7 @@ class FeedbackCollection {
     return { insertedId: doc.id };
   }
 
-  async find(filter: any = {}) {
+  async find() {
     return {
       sort: (sort: any) => ({
         skip: (n: number) => ({
@@ -89,7 +89,7 @@ class SummaryCollection {
     }
   }
 
-  async find(filter: any = {}) {
+  async find() {
     return {
       toArray: async () => summaries,
     };

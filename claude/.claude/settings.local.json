@@ -11,7 +11,8 @@
       "Bash(vercel deploy:*)",
       "Bash(vercel link:*)",
       "Bash(vercel env:*)",
-      "Bash(vercel --version:*)"
+      "Bash(vercel --version:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
