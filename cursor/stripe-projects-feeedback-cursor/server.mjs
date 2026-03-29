@@ -1,8 +1,12 @@
+import 'dotenv/config';
+import Anthropic from '@anthropic-ai/sdk';
 import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Database from 'better-sqlite3';
+
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, 'data');
@@ -28,6 +32,13 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback(created_at DESC);
   CREATE INDEX IF NOT EXISTS idx_chat_created ON chat_message(created_at DESC);
 `);
+
+{
+  const cols = db.prepare(`PRAGMA table_info(chat_message)`).all();
+  if (!cols.some((c) => c.name === 'role')) {
+    db.exec(`ALTER TABLE chat_message ADD COLUMN role TEXT NOT NULL DEFAULT 'user'`);
+  }
+}
 
 const CATEGORY_RULES = [
   {
@@ -148,7 +159,7 @@ const insertFeedback = db.prepare(
   `INSERT INTO feedback (message, twitter, agent_used, created_at) VALUES (?, ?, ?, ?)`
 );
 const insertChat = db.prepare(
-  `INSERT INTO chat_message (body, twitter, created_at) VALUES (?, ?, ?)`
+  `INSERT INTO chat_message (body, twitter, created_at, role) VALUES (?, ?, ?, ?)`
 );
 
 const app = express();
