@@ -1,6 +1,9 @@
 {
   "version": 1,
   "providers": {
+    "chroma": {
+      "name": "Chroma"
+    },
     "posthog": {
       "name": "PostHog"
     },
@@ -12,6 +15,11 @@
     }
   },
   "resources": {
+    "chroma-database": {
+      "name": "chroma-database",
+      "providerName": "Chroma",
+      "serviceId": "database"
+    },
     "posthog-analytics": {
       "name": "posthog-analytics",
       "providerName": "PostHog",

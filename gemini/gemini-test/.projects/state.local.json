@@ -8,6 +8,15 @@
     "projectName": "gemini-test"
   },
   "providers": {
+    "chroma": {
+      "accountRequestId": "fprvcnn_61UPVaHJCYs536hAK16SvNwISGSQOMCtRf2PtuBcmMj2",
+      "linkedAt": "2026-03-29T00:54:53.991Z",
+      "providerId": "prvdr_61UIblE5uGbHmAZLq5BgG",
+      "providerName": "Chroma",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T00:54:53.991Z",
+      "status": "complete"
+    },
     "posthog": {
       "accountRequestId": "fprvcnn_61UPVaLXtvn7eyU4I16SvNwISGSQOMCtRf2PtuBcmQuO",
       "linkedAt": "2026-03-29T00:54:57.451Z",
@@ -37,6 +46,19 @@
     }
   },
   "resources": {
+    "chroma-database": {
+      "configuration": {
+        "name": "gemini-test"
+      },
+      "createdAt": "2026-03-29T01:12:25.933Z",
+      "lastRevealedAt": "2026-03-29T01:12:26.074Z",
+      "lastStatus": "complete",
+      "name": "chroma-database",
+      "providerId": "prvdr_61UIblE5uGbHmAZLq5BgG",
+      "providerName": "Chroma",
+      "resourceId": "fres_61UPVrFK0ZRnHxRTa16SvNwISGSQOMCtRf2PtuBcmS5I",
+      "serviceId": "database"
+    },
     "posthog-analytics": {
       "configuration": {},
       "createdAt": "2026-03-29T01:12:01.543Z",
