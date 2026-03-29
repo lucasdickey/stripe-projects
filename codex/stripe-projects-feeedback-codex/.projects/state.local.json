@@ -37,6 +37,19 @@
     }
   },
   "resources": {
+    "chroma-database": {
+      "configuration": {
+        "name": "stripe-projects-feeedback-codex"
+      },
+      "createdAt": "2026-03-29T01:09:36.190Z",
+      "lastRevealedAt": "2026-03-29T01:09:36.352Z",
+      "lastStatus": "complete",
+      "name": "chroma-database",
+      "providerId": "prvdr_61UIblE5uGbHmAZLq5BgG",
+      "providerName": "Chroma",
+      "resourceId": "fres_61UPVoWKpEDhC652s16SvNwISGSQOMCtRf2PtuBcmExE",
+      "serviceId": "database"
+    },
     "posthog-analytics": {
       "configuration": {},
       "createdAt": "2026-03-29T00:54:58.834Z",
@@ -47,6 +60,20 @@
       "providerName": "PostHog",
       "resourceId": "fres_61UPVaMeZhuAMcoOf16SvNwISGSQOMCtRf2PtuBcmRvs",
       "serviceId": "analytics"
+    },
+    "railway-hosting": {
+      "configuration": {
+        "repo": "lucasdickey/stripe-projects",
+        "branch": "main"
+      },
+      "createdAt": "2026-03-29T01:10:21.297Z",
+      "lastRevealedAt": "2026-03-29T01:10:21.539Z",
+      "lastStatus": "complete",
+      "name": "railway-hosting",
+      "providerId": "prvdr_61UK2uWsoydL7tUBp57Fg",
+      "providerName": "Railway",
+      "resourceId": "fres_61UPVoyknhxjPLW5W16SvNwISGSQOMCtRf2PtuBcmGKG",
+      "serviceId": "hosting"
     },
     "railway-plan": {
       "configuration": {},

@@ -12,10 +12,20 @@
     }
   },
   "resources": {
+    "chroma-database": {
+      "name": "chroma-database",
+      "providerName": "Chroma",
+      "serviceId": "database"
+    },
     "posthog-analytics": {
       "name": "posthog-analytics",
       "providerName": "PostHog",
       "serviceId": "analytics"
+    },
+    "railway-hosting": {
+      "name": "railway-hosting",
+      "providerName": "Railway",
+      "serviceId": "hosting"
     },
     "railway-plan": {
       "name": "railway-plan",
