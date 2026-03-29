@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { buildApp } from './app.mjs';
+import { buildApp } from './lib/create-app.mjs';
 
 const app = await buildApp();
 const port = Number(process.env.PORT) || 3847;

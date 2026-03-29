@@ -2,24 +2,26 @@ import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createDb } from './lib/db.mjs';
-import { summarizeFeedbackHeuristic } from './lib/heuristic-summary.mjs';
+import { createDb } from './db.mjs';
+import { summarizeFeedbackHeuristic } from './heuristic-summary.mjs';
 import {
   ANTHROPIC_MODEL,
   createAnthropicClient,
   getAnthropicApiKey,
   summarizeCategoriesWithAnthropic,
-} from './lib/llm.mjs';
+} from './llm.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Vercel bundles the API under .vercel/output; static files live at project root (cwd). */
-function resolvePublicDir() {
-  const nextToApp = path.join(__dirname, 'public');
-  if (fs.existsSync(nextToApp)) return nextToApp;
-  const cwdPublic = path.join(process.cwd(), 'public');
-  if (fs.existsSync(cwdPublic)) return cwdPublic;
-  return nextToApp;
+function resolveIndexHtmlPath() {
+  const candidates = [
+    path.join(process.cwd(), 'index.html'),
+    path.join(__dirname, '..', 'index.html'),
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return p;
+  }
+  return candidates[0];
 }
 
 function truncate(s, n) {
@@ -265,17 +267,21 @@ ${ctx}`;
     }
   });
 
-  const publicDir = resolvePublicDir();
-  app.use(express.static(publicDir));
-  app.get('*', (req, res) => {
-    const indexPath = path.join(publicDir, 'index.html');
-    if (!fs.existsSync(indexPath)) {
-      console.error('Missing index.html at', indexPath, 'cwd=', process.cwd(), '__dirname=', __dirname);
-      res.status(500).type('text').send('Server misconfiguration: public/index.html not found.');
-      return;
+  if (process.env.VERCEL !== '1') {
+    const publicDir = path.join(process.cwd(), 'public');
+    if (fs.existsSync(publicDir)) {
+      app.use(express.static(publicDir));
     }
-    res.sendFile(indexPath);
-  });
+    app.get('*', (req, res) => {
+      const indexPath = resolveIndexHtmlPath();
+      if (!fs.existsSync(indexPath)) {
+        console.error('Missing index.html at', indexPath);
+        res.status(500).type('text').send('Server misconfiguration: index.html not found.');
+        return;
+      }
+      res.sendFile(indexPath);
+    });
+  }
 
   return app;
 }

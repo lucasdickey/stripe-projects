@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node server.mjs",
-    "dev": "node --watch server.mjs",
+    "start": "node local-server.mjs",
+    "dev": "node --watch local-server.mjs",
     "deploy:vercel": "vercel deploy --prod"
   },
   "engines": {

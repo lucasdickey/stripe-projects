@@ -76,7 +76,7 @@
     "hosting": "Vercel",
     "production_url": "https://stripe-projects-feeedback-cursor.vercel.app",
     "vercel_team_scope": "prompt-yield",
-    "notes": "Turso (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN) set in Vercel Production env. Local dev uses data/feedback.sqlite unless USE_TURSO=1. Unset Stripe VERCEL_PROJECT_ID when running vercel CLI if org id error."
+    "notes": "vercel.json v2: @vercel/static for root index.html + @vercel/node for api/index.mjs; routes run filesystem then /api/* to the function. Avoid root app.mjs/server.mjs (Vercel Express auto-detector). Turso env on Vercel for DB. Unset Stripe VERCEL_* in shell when vercel CLI errors on org id."
   },
   "cli_reference": {
     "successful_adds": [
