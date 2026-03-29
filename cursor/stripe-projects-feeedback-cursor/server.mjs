@@ -100,12 +100,9 @@ const CATEGORY_RULES = [
     label: 'Pricing, limits & plans',
     patterns: [/pricing/i, /plan/i, /limit/i, /quota/i, /free tier/i],
   },
-  {
-    id: 'feedback_misc',
-    label: 'General product feedback',
-    patterns: [/./],
-  },
 ];
+
+const MISC = { id: 'feedback_misc', label: 'General product feedback' };
 
 function scoreTextAgainstCategories(text) {
   const scores = new Map();
@@ -125,32 +122,26 @@ function summarizeFeedbackRows(rows) {
   for (const rule of CATEGORY_RULES) {
     agg.set(rule.id, { id: rule.id, label: rule.label, count: 0, score: 0 });
   }
+  agg.set(MISC.id, { id: MISC.id, label: MISC.label, count: 0, score: 0 });
   for (const row of rows) {
     const text = `${row.message} ${row.twitter ?? ''} ${row.agent_used ?? ''}`;
     const scores = scoreTextAgainstCategories(text);
-    let maxId = 'feedback_misc';
-    let maxS = -1;
+    let maxId = MISC.id;
+    let maxS = 0;
     for (const [id, v] of scores) {
       if (v.score > maxS) {
         maxS = v.score;
         maxId = id;
       }
     }
-    if (maxS <= 0) maxId = 'feedback_misc';
-    const slot = agg.get(maxId);
+    const slot = agg.get(maxS > 0 ? maxId : MISC.id);
     slot.count += 1;
     slot.score += maxS;
   }
   const list = [...agg.values()]
-    .filter((x) => x.id !== 'feedback_misc' || x.count > 0)
+    .filter((x) => x.count > 0)
     .sort((a, b) => b.count - a.count || b.score - a.score);
-  const top = list.slice(0, 10);
-  const misc = agg.get('feedback_misc');
-  if (misc.count > 0 && !top.some((t) => t.id === 'feedback_misc')) {
-    top.push(misc);
-    top.sort((a, b) => b.count - a.count);
-  }
-  return top.slice(0, 10).map(({ id, label, count }) => ({ id, label, count }));
+  return list.slice(0, 10).map(({ id, label, count }) => ({ id, label, count }));
 }
 
 const insertFeedback = db.prepare(
