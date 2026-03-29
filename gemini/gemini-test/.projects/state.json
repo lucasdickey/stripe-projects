@@ -1,6 +1,9 @@
 {
   "version": 1,
   "providers": {
+    "posthog": {
+      "name": "PostHog"
+    },
     "railway": {
       "name": "Railway"
     },
@@ -9,6 +12,11 @@
     }
   },
   "resources": {
+    "posthog-analytics": {
+      "name": "posthog-analytics",
+      "providerName": "PostHog",
+      "serviceId": "analytics"
+    },
     "railway-plan": {
       "name": "railway-plan",
       "providerName": "Railway",

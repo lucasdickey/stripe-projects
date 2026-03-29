@@ -8,6 +8,15 @@
     "projectName": "gemini-test"
   },
   "providers": {
+    "posthog": {
+      "accountRequestId": "fprvcnn_61UPVaLXtvn7eyU4I16SvNwISGSQOMCtRf2PtuBcmQuO",
+      "linkedAt": "2026-03-29T00:54:57.451Z",
+      "providerId": "prvdr_61UGMHNyOleb3A55m5Pg8",
+      "providerName": "PostHog",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T00:54:57.451Z",
+      "status": "complete"
+    },
     "railway": {
       "accountRequestId": "fprvcnn_61UPVYEOuU8PEmMUF16SvNwISGSQOMCtRf2PtuBcm68e",
       "linkedAt": "2026-03-18T18:09:55.174Z",
@@ -28,6 +37,17 @@
     }
   },
   "resources": {
+    "posthog-analytics": {
+      "configuration": {},
+      "createdAt": "2026-03-29T01:12:01.543Z",
+      "lastRevealedAt": "2026-03-29T01:12:01.677Z",
+      "lastStatus": "complete",
+      "name": "posthog-analytics",
+      "providerId": "prvdr_61UGMHNyOleb3A55m5Pg8",
+      "providerName": "PostHog",
+      "resourceId": "fres_61UPVqro2ieOrvZ7116SvNwISGSQOMCtRf2PtuBcmMVs",
+      "serviceId": "analytics"
+    },
     "railway-plan": {
       "configuration": {},
       "createdAt": "2026-03-29T01:11:29.969Z",
