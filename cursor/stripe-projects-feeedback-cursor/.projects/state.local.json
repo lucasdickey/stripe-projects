@@ -61,6 +61,15 @@
       "redirectUrl": null,
       "requestedAt": "2026-03-29T01:08:24.724Z",
       "status": "complete"
+    },
+    "vercel": {
+      "accountRequestId": "fprvcnn_61UPW6Q6PdikTplIr16SvNwISGSQOMCtRf2PtuBcmJIm",
+      "linkedAt": "2026-03-29T01:28:06.446Z",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:28:06.446Z",
+      "status": "complete"
     }
   },
   "resources": {
@@ -125,6 +134,19 @@
       "providerName": "Turso",
       "resourceId": "fres_61UPVuTOfkbz3OQ7m16SvNwISGSQOMCtRf2PtuBcmY2S",
       "serviceId": "database"
+    },
+    "vercel-feedback": {
+      "configuration": {
+        "name": "stripe-projects-feedback"
+      },
+      "createdAt": "2026-03-29T01:31:17.437Z",
+      "lastRevealedAt": "2026-03-29T01:31:17.613Z",
+      "lastStatus": "complete",
+      "name": "vercel-feedback",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "resourceId": "fres_61UPW9Vpvr1SCo9aI16SvNwISGSQOMCtRf2PtuBcm3ay",
+      "serviceId": "project"
     }
   }
 }

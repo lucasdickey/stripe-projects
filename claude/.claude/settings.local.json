@@ -5,7 +5,13 @@
       "Bash(stripe projects init:*)",
       "Bash(stripe projects:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Read(//Users/lucasdickey/Documents/code/stripe-projects/**)",
+      "Bash(vercel deploy:*)",
+      "Bash(vercel link:*)",
+      "Bash(vercel env:*)",
+      "Bash(vercel --version:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFeedbackCollection } from '@/lib/db';
-import { OpenAI } from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 
-function getOpenAIClient() {
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+function getAnthropicClient() {
+  return new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
   });
 }
 
@@ -32,27 +32,25 @@ export async function POST(request: NextRequest) {
       .map((item: any) => `- ${item.message}${item.agent ? ` (Agent: ${item.agent})` : ''}`)
       .join('\n');
 
-    // Call OpenAI for response
-    const openai = getOpenAIClient();
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+    // Call Anthropic Claude Haiku for response
+    const client = getAnthropicClient();
+    const response = await client.messages.create({
+      model: 'claude-3-5-haiku-20241022',
+      max_tokens: 500,
       messages: [
         {
-          role: 'system',
-          content: `You are a helpful assistant discussing feedback about Stripe Projects improvements.
-          You have access to recent feedback items from users and can discuss patterns, suggestions, and help users understand what others are asking for.
-          Keep responses concise and focused on the Stripe Projects feedback context.`,
-        },
-        {
           role: 'user',
-          content: `Recent feedback items:\n${feedbackSummary}\n\nUser question: ${message}`,
+          content: `You are a helpful assistant discussing feedback about Stripe Projects improvements. You have access to recent feedback items from users and can discuss patterns, suggestions, and help users understand what others are asking for. Keep responses concise and focused on the Stripe Projects feedback context.
+
+Recent feedback items:
+${feedbackSummary}
+
+User question: ${message}`,
         },
       ],
-      temperature: 0.7,
-      max_tokens: 500,
     });
 
-    const assistantMessage = response.choices[0].message.content;
+    const assistantMessage = response.content[0].type === 'text' ? response.content[0].text : 'Unable to process response';
 
     return NextResponse.json({
       message: assistantMessage,

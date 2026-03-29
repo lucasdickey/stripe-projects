@@ -5,3 +5,4 @@ data/*.sqlite-*
 .projects/cache
 .projects/vault
 .env
+.vercel

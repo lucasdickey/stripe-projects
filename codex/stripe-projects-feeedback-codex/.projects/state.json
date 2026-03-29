@@ -9,6 +9,9 @@
     },
     "railway": {
       "name": "Railway"
+    },
+    "vercel": {
+      "name": "Vercel"
     }
   },
   "resources": {
@@ -22,11 +25,6 @@
       "providerName": "PostHog",
       "serviceId": "analytics"
     },
-    "railway-hosting": {
-      "name": "railway-hosting",
-      "providerName": "Railway",
-      "serviceId": "hosting"
-    },
     "railway-plan": {
       "name": "railway-plan",
       "providerName": "Railway",
@@ -36,6 +34,16 @@
       "name": "railway-postgres",
       "providerName": "Railway",
       "serviceId": "postgres"
+    },
+    "Railway/hosting": {
+      "name": "Railway/hosting",
+      "providerName": "Railway",
+      "serviceId": "hosting"
+    },
+    "vercel-project": {
+      "name": "vercel-project",
+      "providerName": "Vercel",
+      "serviceId": "project"
     }
   }
 }

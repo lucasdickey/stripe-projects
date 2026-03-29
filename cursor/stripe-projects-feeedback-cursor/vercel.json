@@ -1,0 +1,10 @@
+{
+  "installCommand": "npm install --omit=optional",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
+}

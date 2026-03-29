@@ -18,6 +18,9 @@
     },
     "turso": {
       "name": "Turso"
+    },
+    "vercel": {
+      "name": "Vercel"
     }
   },
   "resources": {
@@ -45,6 +48,11 @@
       "name": "turso-feedback-db",
       "providerName": "Turso",
       "serviceId": "database"
+    },
+    "vercel-feedback": {
+      "name": "vercel-feedback",
+      "providerName": "Vercel",
+      "serviceId": "project"
     }
   }
 }

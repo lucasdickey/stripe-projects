@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getFeedbackCollection, getSummaryCollection } from '@/lib/db';
-import { OpenAI } from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 
-function getOpenAIClient() {
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+function getAnthropicClient() {
+  return new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
   });
 }
 
@@ -34,33 +34,31 @@ async function generateSummary(): Promise<CategorySummary[]> {
     .map((item: any) => item.message)
     .join('\n---\n');
 
-  // Use OpenAI to categorize and summarize
+  // Use Anthropic Claude to categorize and summarize
   try {
-    const openai = getOpenAIClient();
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+    const client = getAnthropicClient();
+    const response = await client.messages.create({
+      model: 'claude-3-5-haiku-20241022',
+      max_tokens: 2000,
       messages: [
         {
-          role: 'system',
-          content: `You are an expert at categorizing user feedback about software features and improvements.
-          Analyze the provided feedback and:
-          1. Identify the top 10 most common themes/categories of feedback
-          2. For each category, provide a clear name and brief description
-          3. Count how many feedback items belong to each category
-          4. Provide 2-3 representative examples for each category
-
-          Return the response as a JSON array with objects containing: category, description, count, examples (array of 2-3 strings)`,
-        },
-        {
           role: 'user',
-          content: `Categorize this feedback:\n\n${feedbackText}`,
+          content: `You are an expert at categorizing user feedback about software features and improvements.
+Analyze the provided feedback and:
+1. Identify the top 10 most common themes/categories of feedback
+2. For each category, provide a clear name and brief description
+3. Count how many feedback items belong to each category
+4. Provide 2-3 representative examples for each category
+
+Return the response as a JSON array with objects containing: category, description, count, examples (array of 2-3 strings)
+
+Feedback to categorize:
+${feedbackText}`,
         },
       ],
-      temperature: 0.3,
-      max_tokens: 2000,
     });
 
-    const content = response.choices[0].message.content;
+    const content = response.content[0].type === 'text' ? response.content[0].text : null;
     if (!content) {
       return [];
     }

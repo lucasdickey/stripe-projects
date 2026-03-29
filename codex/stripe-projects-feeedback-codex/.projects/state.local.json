@@ -34,6 +34,15 @@
       "redirectUrl": null,
       "requestedAt": "2026-03-18T18:09:55.174Z",
       "status": "complete"
+    },
+    "vercel": {
+      "accountRequestId": "fprvcnn_61UPW6Q6PdikTplIr16SvNwISGSQOMCtRf2PtuBcmJIm",
+      "linkedAt": "2026-03-29T01:28:06.446Z",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:28:06.446Z",
+      "status": "complete"
     }
   },
   "resources": {
@@ -61,20 +70,6 @@
       "resourceId": "fres_61UPVaMeZhuAMcoOf16SvNwISGSQOMCtRf2PtuBcmRvs",
       "serviceId": "analytics"
     },
-    "railway-hosting": {
-      "configuration": {
-        "repo": "lucasdickey/stripe-projects",
-        "branch": "main"
-      },
-      "createdAt": "2026-03-29T01:10:21.297Z",
-      "lastRevealedAt": "2026-03-29T01:10:21.539Z",
-      "lastStatus": "complete",
-      "name": "railway-hosting",
-      "providerId": "prvdr_61UK2uWsoydL7tUBp57Fg",
-      "providerName": "Railway",
-      "resourceId": "fres_61UPVoyknhxjPLW5W16SvNwISGSQOMCtRf2PtuBcmGKG",
-      "serviceId": "hosting"
-    },
     "railway-plan": {
       "configuration": {},
       "createdAt": "2026-03-29T00:53:53.298Z",
@@ -96,6 +91,30 @@
       "providerName": "Railway",
       "resourceId": "fres_61UPVZKFVM2BiSeK816SvNwISGSQOMCtRf2PtuBcmXfc",
       "serviceId": "postgres"
+    },
+    "Railway/hosting": {
+      "configuration": {},
+      "createdAt": "2026-03-29T01:33:33.733Z",
+      "lastRevealedAt": null,
+      "lastStatus": "complete",
+      "name": "Railway/hosting",
+      "providerId": "prvdr_61UK2uWsoydL7tUBp57Fg",
+      "providerName": "Railway",
+      "resourceId": "fres_61UPWBh65m93TFqJN16SvNwISGSQOMCtRf2PtuBcmXPU",
+      "serviceId": "hosting"
+    },
+    "vercel-project": {
+      "configuration": {
+        "name": "stripe-projects-feeedback-codex"
+      },
+      "createdAt": "2026-03-29T01:36:52.135Z",
+      "lastRevealedAt": "2026-03-29T01:36:52.293Z",
+      "lastStatus": "complete",
+      "name": "vercel-project",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "resourceId": "fres_61UPWEuX3IAQOq3LX16SvNwISGSQOMCtRf2PtuBcmMwS",
+      "serviceId": "project"
     }
   }
 }
