@@ -1,6 +1,9 @@
 {
   "version": 1,
   "providers": {
+    "railway": {
+      "name": "Railway"
+    },
     "turso": {
       "name": "Turso"
     }
