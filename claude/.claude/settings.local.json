@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(stripe projects init:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
