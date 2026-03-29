@@ -1,3 +1,5 @@
 .projects/cache
 .projects/vault
 .env
+.vercel
+.env*.local
