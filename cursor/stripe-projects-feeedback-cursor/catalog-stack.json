@@ -1,0 +1,89 @@
+{
+  "project": "stripe-projects-feeedback-cursor",
+  "source": "Stripe Projects catalog (stripe projects catalog --json), Mar 2026",
+  "chosen_stack": {
+    "database": {
+      "provider": "Turso",
+      "service": "database",
+      "local_resource_name": "turso-feedback-db",
+      "config": { "name": "stripe-feedback-db", "location": "aws-us-east-1" },
+      "status": "complete"
+    },
+    "vector": {
+      "provider": "Chroma",
+      "service": "database",
+      "local_resource_name": "chroma-feedback-vec",
+      "config": { "name": "stripe_feedback_vec" },
+      "status": "complete"
+    },
+    "compute_hosting": {
+      "primary_choice": {
+        "provider": "Railway",
+        "service": "hosting",
+        "local_resource_name": "railway-feedback-host",
+        "config": { "image": "nginx:alpine" },
+        "status": "errored",
+        "error": "Free plan resource provision limit exceeded (provider message during add). Stripe status shows resource name Railway/hosting in errored state."
+      },
+      "fallback_attempts": [
+        {
+          "provider": "Vercel",
+          "service": "project",
+          "config": { "name": "stripe-projects-feedback" },
+          "status": "failed",
+          "error": "Timed out waiting for Vercel account linking (browser auth required)."
+        },
+        {
+          "provider": "Runloop",
+          "service": "sandbox",
+          "status": "failed",
+          "error": "Active plan required to provision sandbox."
+        }
+      ],
+      "note": "Complete hosting via Railway upgrade/cleanup in dashboard, or run stripe projects link vercel and re-run add with browser auth."
+    },
+    "auth": {
+      "provider": "Clerk",
+      "service": "auth",
+      "local_resource_name": "clerk-feedback",
+      "config": { "app_name": "Stripe Projects Feedback" },
+      "status": "complete"
+    },
+    "analytics": {
+      "provider": "PostHog",
+      "service": "analytics",
+      "local_resource_name": "posthog-feedback",
+      "status": "complete"
+    },
+    "storage": {
+      "primary_choice": {
+        "provider": "Railway",
+        "service": "bucket",
+        "status": "not_provisioned",
+        "reason": "Skipped after Railway hosting hit free-tier limits; use Supabase or paid Railway instead."
+      },
+      "fallback_attempted": {
+        "provider": "Supabase",
+        "service": "supabase:free",
+        "local_resource_name": "supabase-feedback",
+        "config": { "name": "stripe-feedback", "region": "americas" },
+        "status": "unknown_or_pending",
+        "note": "CLI add was started; may require browser linking. Re-run stripe projects add Supabase/supabase:free ... locally if not visible in stripe projects status."
+      }
+    }
+  },
+  "cli_reference": {
+    "successful_adds": [
+      "stripe projects add PostHog/analytics --name posthog-feedback -y --accept-tos --json",
+      "stripe projects add Clerk/auth --name clerk-feedback -y --accept-tos --json --config '{\"app_name\":\"Stripe Projects Feedback\"}'",
+      "stripe projects add Turso/database --name turso-feedback-db -y --accept-tos --json --config '{\"name\":\"stripe-feedback-db\",\"location\":\"aws-us-east-1\"}'",
+      "stripe projects add Chroma/database --name chroma-feedback-vec -y --accept-tos --json --config '{\"name\":\"stripe_feedback_vec\"}'"
+    ],
+    "next_steps": [
+      "stripe projects status",
+      "stripe projects env",
+      "stripe projects open Railway",
+      "stripe projects link Vercel && stripe projects add Vercel/project --name vercel-feedback -y --accept-tos --config '{\"name\":\"stripe-projects-feedback\"}'"
+    ]
+  }
+}
