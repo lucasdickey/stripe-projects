@@ -72,6 +72,12 @@
       }
     }
   },
+  "deployment": {
+    "hosting": "Vercel",
+    "production_url": "https://stripe-projects-feeedback-cursor.vercel.app",
+    "vercel_team_scope": "prompt-yield",
+    "notes": "Turso (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN) set in Vercel Production env. Local dev uses data/feedback.sqlite unless USE_TURSO=1. Unset Stripe VERCEL_PROJECT_ID when running vercel CLI if org id error."
+  },
   "cli_reference": {
     "successful_adds": [
       "stripe projects add PostHog/analytics --name posthog-feedback -y --accept-tos --json",
