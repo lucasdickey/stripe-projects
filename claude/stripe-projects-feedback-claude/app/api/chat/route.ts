@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getFeedbackCollection } from '@/lib/db';
 import { OpenAI } from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, feedbackContext } = body;
+    const { message } = body;
 
     if (!message || message.trim().length === 0) {
       return NextResponse.json(
@@ -31,6 +33,7 @@ export async function POST(request: NextRequest) {
       .join('\n');
 
     // Call OpenAI for response
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [

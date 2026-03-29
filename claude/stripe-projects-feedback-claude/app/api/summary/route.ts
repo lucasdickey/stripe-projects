@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getFeedbackCollection, getSummaryCollection } from '@/lib/db';
 import { OpenAI } from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 interface CategorySummary {
   category: string;
@@ -34,6 +36,7 @@ async function generateSummary(): Promise<CategorySummary[]> {
 
   // Use OpenAI to categorize and summarize
   try {
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
@@ -88,7 +91,7 @@ async function generateSummary(): Promise<CategorySummary[]> {
     // Store summary
     const summaryCollection = await getSummaryCollection();
     await summaryCollection.updateOne(
-      { _id: 'latest' },
+      { _id: 'latest' } as any,
       {
         $set: {
           categories,
@@ -106,10 +109,10 @@ async function generateSummary(): Promise<CategorySummary[]> {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const summaryCollection = await getSummaryCollection();
-    const summary = await summaryCollection.findOne({ _id: 'latest' });
+    const summary = await summaryCollection.findOne({ _id: 'latest' } as any);
 
     if (!summary) {
       // Generate new summary if not exists
@@ -146,7 +149,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const summary = await generateSummary();
     return NextResponse.json({
