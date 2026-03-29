@@ -4,9 +4,17 @@
   "description": "Feedback collection and chat app for Stripe Projects improvements",
   "scripts": {
     "dev": "next dev",
+    "dev:docker": "docker-compose up",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "docker:build": "docker build -t stripe-feedback:latest .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env.local stripe-feedback:latest",
+    "stripe:catalog": "stripe projects catalog",
+    "stripe:add-services": "stripe projects add vercel/project && stripe projects add railway/mongo && stripe projects add posthog/analytics",
+    "stripe:env-pull": "stripe projects env --pull",
+    "stripe:env-push": "stripe projects env --push"
   },
   "dependencies": {
     "next": "^15.0.0",

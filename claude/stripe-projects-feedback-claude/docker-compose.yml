@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0-alpine
+    container_name: stripe-feedback-mongodb
+    environment:
+      MONGO_INITDB_DATABASE: feedback_db
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: stripe-feedback-app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/feedback_db?authSource=admin
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  default:
+    name: stripe-feedback-network

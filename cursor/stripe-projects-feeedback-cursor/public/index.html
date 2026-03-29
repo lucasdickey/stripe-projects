@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stripe Projects — community feedback</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0d10;
+      --panel: #14161c;
+      --border: #2a2e38;
+      --text: #e8eaef;
+      --muted: #9aa3b2;
+      --accent: #7c5cff;
+      --accent-dim: rgba(124, 92, 255, 0.15);
+      --ok: #3dd68c;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(124, 92, 255, 0.18), transparent),
+        radial-gradient(900px 500px at 100% 0%, rgba(61, 214, 140, 0.08), transparent),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+    header h1 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    header p.lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 52ch;
+    }
+    .grid {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 960px) {
+      .grid-main { grid-template-columns: 1fr 1fr; align-items: start; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.35rem;
+    }
+    .card h2 {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    input, textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f1117;
+      color: var(--text);
+      padding: 0.65rem 0.75rem;
+      font: inherit;
+      margin-bottom: 0.85rem;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 10px;
+      padding: 0.65rem 1.1rem;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+    }
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .summary-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .pill {
+      font-size: 0.8rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(124, 92, 255, 0.35);
+      color: var(--text);
+    }
+    .pill span { color: var(--muted); margin-left: 0.35rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.4rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .msg-cell { max-width: 420px; word-break: break-word; }
+    .pager {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .chat-log {
+      max-height: 360px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding-right: 0.25rem;
+    }
+    .chat-bubble {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.75rem;
+      background: #0f1117;
+    }
+    .chat-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .status { font-size: 0.85rem; color: var(--muted); min-height: 1.25rem; }
+    .status.ok { color: var(--ok); }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Stripe Projects feedback</h1>
+      <p class="lead">
+        Share improvements for <a href="https://docs.stripe.com/projects" style="color:var(--accent)">Stripe Projects</a>.
+        Submissions are public; add optional contact and agent context. Discuss everything in the open chat.
+      </p>
+      <div class="summary-strip" id="summaryStrip" aria-live="polite"></div>
+    </header>
+
+    <div class="grid grid-main">
+      <div class="card">
+        <h2>Suggest an improvement</h2>
+        <form id="feedbackForm">
+          <label for="fbMessage">Message</label>
+          <textarea id="fbMessage" name="message" required placeholder="What would make Stripe Projects better?"></textarea>
+          <label for="fbTwitter">X (Twitter) handle <span style="font-weight:400">(optional)</span></label>
+          <input id="fbTwitter" name="twitter" placeholder="@you" autocomplete="off" />
+          <label for="fbAgent">Agent you used with Projects <span style="font-weight:400">(optional)</span></label>
+          <input id="fbAgent" name="agent_used" placeholder="e.g. Cursor, Claude Code, Codex" autocomplete="off" />
+          <button type="submit">Submit feedback</button>
+          <div class="status" id="fbStatus"></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Open discussion</h2>
+        <p class="hint">Chat is public. Conversation is grounded in the same shared list of submissions everyone sees below.</p>
+        <div class="chat-log" id="chatLog"></div>
+        <form id="chatForm" style="margin-top:0.85rem">
+          <label for="chatBody">Message</label>
+          <textarea id="chatBody" name="body" required placeholder="React, ask a question, or connect themes across submissions…"></textarea>
+          <label for="chatTwitter">X handle <span style="font-weight:400">(optional)</span></label>
+          <input id="chatTwitter" name="twitter" placeholder="@you" autocomplete="off" />
+          <button type="submit">Send to chat</button>
+          <div class="status" id="chatStatus"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1.25rem">
+      <h2>All submissions</h2>
+      <div class="hint" id="feedbackMeta"></div>
+      <div style="overflow-x:auto;margin-top:0.75rem">
+        <table>
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Message</th>
+              <th>X</th>
+              <th>Agent</th>
+            </tr>
+          </thead>
+          <tbody id="feedbackBody"></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <button type="button" class="secondary" id="prevPage">Previous</button>
+        <span id="pageLabel" style="color:var(--muted);font-size:0.9rem"></span>
+        <button type="button" class="secondary" id="nextPage">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const summaryStrip = document.getElementById('summaryStrip');
+    const feedbackBody = document.getElementById('feedbackBody');
+    const feedbackMeta = document.getElementById('feedbackMeta');
+    const pageLabel = document.getElementById('pageLabel');
+    const prevPage = document.getElementById('prevPage');
+    const nextPage = document.getElementById('nextPage');
+    const chatLog = document.getElementById('chatLog');
+
+    let page = 1;
+    const limit = 100;
+
+    async function loadSummary() {
+      const r = await fetch('/api/summary');
+      const data = await r.json();
+      summaryStrip.innerHTML = '';
+      if (!data.categories?.length) {
+        summaryStrip.innerHTML = '<span class="pill">No submissions yet — be the first.</span>';
+        return;
+      }
+      for (const c of data.categories) {
+        const el = document.createElement('span');
+        el.className = 'pill';
+        el.textContent = c.label;
+        const n = document.createElement('span');
+        n.textContent = String(c.count);
+        el.appendChild(n);
+        summaryStrip.appendChild(el);
+      }
+      feedbackMeta.textContent = `${data.total} submission(s) total · top categories refreshed on load`;
+    }
+
+    function fmtDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      } catch {
+        return iso;
+      }
+    }
+
+    async function loadFeedback() {
+      const r = await fetch(`/api/feedback?page=${page}&limit=${limit}`);
+      const data = await r.json();
+      feedbackBody.innerHTML = '';
+      for (const row of data.rows) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${fmtDate(row.created_at)}</td>
+          <td class="msg-cell"></td>
+          <td>${row.twitter ? escapeHtml(row.twitter) : '—'}</td>
+          <td>${row.agent_used ? escapeHtml(row.agent_used) : '—'}</td>
+        `;
+        tr.querySelector('.msg-cell').textContent = row.message;
+        feedbackBody.appendChild(tr);
+      }
+      const pages = Math.max(1, Math.ceil(data.total / data.limit));
+      pageLabel.textContent = `Page ${data.page} of ${pages}`;
+      prevPage.disabled = data.page <= 1;
+      nextPage.disabled = data.page >= pages;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    async function loadChat() {
+      const r = await fetch('/api/chat?limit=200');
+      const data = await r.json();
+      chatLog.innerHTML = '';
+      for (const m of data.rows) {
+        const div = document.createElement('div');
+        div.className = 'chat-bubble';
+        const meta = document.createElement('div');
+        meta.className = 'chat-meta';
+        meta.textContent = `${fmtDate(m.created_at)}${m.twitter ? ' · ' + m.twitter : ''}`;
+        const body = document.createElement('div');
+        body.textContent = m.body;
+        div.appendChild(meta);
+        div.appendChild(body);
+        chatLog.appendChild(div);
+      }
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('fbStatus');
+      status.textContent = '';
+      const payload = {
+        message: document.getElementById('fbMessage').value,
+        twitter: document.getElementById('fbTwitter').value || null,
+        agent_used: document.getElementById('fbAgent').value || null,
+      };
+      const r = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) {
+        status.textContent = (await r.json().catch(() => ({}))).error || 'Could not save';
+        return;
+      }
+      status.className = 'status ok';
+      status.textContent = 'Thanks — your note is live.';
+      e.target.reset();
+      page = 1;
+      await Promise.all([loadSummary(), loadFeedback(), loadChat()]);
+    });
+
+    document.getElementById('chatForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('chatStatus');
+      status.textContent = '';
+      const payload = {
+        body: document.getElementById('chatBody').value,
+        twitter: document.getElementById('chatTwitter').value || null,
+      };
+      const r = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) {
+        status.textContent = (await r.json().catch(() => ({}))).error || 'Could not send';
+        return;
+      }
+      status.className = 'status ok';
+      status.textContent = 'Posted.';
+      document.getElementById('chatBody').value = '';
+      await loadChat();
+    });
+
+    prevPage.addEventListener('click', () => {
+      if (page > 1) { page -= 1; loadFeedback(); }
+    });
+    nextPage.addEventListener('click', () => {
+      page += 1;
+      loadFeedback();
+    });
+
+    loadSummary().catch(console.error);
+    loadFeedback().catch(console.error);
+    loadChat().catch(console.error);
+  </script>
+</body>
+</html>
