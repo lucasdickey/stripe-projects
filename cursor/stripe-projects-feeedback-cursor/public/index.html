@@ -261,7 +261,16 @@
         el.appendChild(n);
         summaryStrip.appendChild(el);
       }
-      feedbackMeta.textContent = `${data.total} submission(s) total · top categories refreshed on load`;
+      const src = data.summarySource || 'heuristic';
+      const srcLabel =
+        src === 'llm'
+          ? 'Claude (Anthropic)'
+          : src === 'heuristic_fallback'
+            ? 'keyword fallback (Claude error)'
+            : src === 'none'
+              ? '—'
+              : 'keyword rules (no API key)';
+      feedbackMeta.textContent = `${data.total} submission(s) total · category summary: ${srcLabel}`;
     }
 
     function fmtDate(iso) {
@@ -307,11 +316,12 @@
           'Chat is public. Conversation is grounded in the same shared list of submissions everyone sees below.';
         if (c.aiEnabled) {
           hint.textContent =
-            base + ' Claude replies after each message (Anthropic), using recent feedback as context.';
+            base +
+            ' Top categories and chat replies use Claude (Anthropic) when the API key is set; both use the same key.';
         } else {
           hint.textContent =
             base +
-            ' Set ANTHROPIC_API_KEY in a local .env file to enable Claude replies (never commit secrets).';
+            ' Set ANTHROPIC_API_KEY (e.g. in .env locally or Vercel env) for Claude-powered category summaries and chat replies.';
         }
       } catch {
         /* keep default hint */
