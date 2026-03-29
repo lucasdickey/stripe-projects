@@ -1,12 +1,48 @@
 {
   "version": 1,
   "project": {
-    "merchantId": "acct_1RlzywDvWdnpmOST",
+    "initializedAt": "2026-03-29T00:51:28.609Z",
     "merchantDisplayName": null,
+    "merchantId": "acct_1RlzywDvWdnpmOST",
     "projectId": "project_61UPVWyYFyOMuZ6rs16SvNwISGSQOMCtRf2PtuBcmOBM",
-    "projectName": "gemini-test",
-    "initializedAt": "2026-03-29T00:51:28.609Z"
+    "projectName": "gemini-test"
   },
-  "providers": {},
-  "resources": {}
+  "providers": {
+    "turso": {
+      "accountRequestId": "facctrq_61UPVnLd1Uzps8ckT16SvNwISGSQOMCtRf2PtuBcmKxM",
+      "linkedAt": "2026-03-29T01:08:24.737Z",
+      "providerId": "prvdr_61UGLtrGjcXK8rTq15RWq",
+      "providerName": "Turso",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:08:24.736Z",
+      "status": "complete"
+    }
+  },
+  "resources": {
+    "turso-database": {
+      "configuration": {
+        "location": "aws-us-east-1",
+        "name": "gemini-test"
+      },
+      "createdAt": "2026-03-29T01:08:40.924Z",
+      "lastRevealedAt": "2026-03-29T01:08:41.024Z",
+      "lastStatus": "complete",
+      "name": "turso-database",
+      "providerId": "prvdr_61UGLtrGjcXK8rTq15RWq",
+      "providerName": "Turso",
+      "resourceId": "fres_61UPVncgmhE9vG3o616SvNwISGSQOMCtRf2PtuBcm9Sy",
+      "serviceId": "database"
+    },
+    "turso-plan": {
+      "configuration": {},
+      "createdAt": "2026-03-29T01:08:30.029Z",
+      "lastRevealedAt": "2026-03-29T01:08:30.121Z",
+      "lastStatus": "complete",
+      "name": "turso-plan",
+      "providerId": "prvdr_61UGLtrGjcXK8rTq15RWq",
+      "providerName": "Turso",
+      "resourceId": "fres_61UPVnREMfQtvEoLV16SvNwISGSQOMCtRf2PtuBcmHAW",
+      "serviceId": "starter"
+    }
+  }
 }

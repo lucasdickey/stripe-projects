@@ -1,5 +1,20 @@
 {
   "version": 1,
-  "providers": {},
-  "resources": {}
+  "providers": {
+    "turso": {
+      "name": "Turso"
+    }
+  },
+  "resources": {
+    "turso-database": {
+      "name": "turso-database",
+      "providerName": "Turso",
+      "serviceId": "database"
+    },
+    "turso-plan": {
+      "name": "turso-plan",
+      "providerName": "Turso",
+      "serviceId": "starter"
+    }
+  }
 }
