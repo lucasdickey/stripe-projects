@@ -37,13 +37,13 @@ The UI includes:
 
 Official docs used: `https://docs.stripe.com/projects.md`
 
-Project initialization was started with:
+Project initialization was completed with:
 
 ```bash
 stripe projects init stripe-projects-feeedback-codex
 ```
 
-The CLI is currently waiting for Stripe browser authentication. Once authenticated, the next provisioning commands for the selected stack are expected to be:
+Provisioning commands used during this session:
 
 ```bash
 stripe projects add railway/hosting
