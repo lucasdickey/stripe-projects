@@ -153,6 +153,10 @@
       padding: 0.55rem 0.75rem;
       background: #0f1117;
     }
+    .chat-bubble.assistant {
+      border-color: rgba(124, 92, 255, 0.45);
+      background: rgba(124, 92, 255, 0.08);
+    }
     .chat-meta {
       font-size: 0.75rem;
       color: var(--muted);
@@ -191,7 +195,7 @@
 
       <div class="card">
         <h2>Open discussion</h2>
-        <p class="hint">Chat is public. Conversation is grounded in the same shared list of submissions everyone sees below.</p>
+        <p class="hint" id="chatHint">Chat is public. Conversation is grounded in the same shared list of submissions everyone sees below.</p>
         <div class="chat-log" id="chatLog"></div>
         <form id="chatForm" style="margin-top:0.85rem">
           <label for="chatBody">Message</label>
@@ -294,16 +298,39 @@
       return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
 
+    async function loadChatConfig() {
+      const hint = document.getElementById('chatHint');
+      try {
+        const r = await fetch('/api/chat/config');
+        const c = await r.json();
+        const base =
+          'Chat is public. Conversation is grounded in the same shared list of submissions everyone sees below.';
+        if (c.aiEnabled) {
+          hint.textContent =
+            base + ' Claude replies after each message (Anthropic), using recent feedback as context.';
+        } else {
+          hint.textContent =
+            base +
+            ' Set ANTHROPIC_API_KEY in a local .env file to enable Claude replies (never commit secrets).';
+        }
+      } catch {
+        /* keep default hint */
+      }
+    }
+
     async function loadChat() {
       const r = await fetch('/api/chat?limit=200');
       const data = await r.json();
       chatLog.innerHTML = '';
       for (const m of data.rows) {
         const div = document.createElement('div');
-        div.className = 'chat-bubble';
+        const isAi = m.role === 'assistant';
+        div.className = 'chat-bubble' + (isAi ? ' assistant' : '');
         const meta = document.createElement('div');
         meta.className = 'chat-meta';
-        meta.textContent = `${fmtDate(m.created_at)}${m.twitter ? ' · ' + m.twitter : ''}`;
+        meta.textContent = isAi
+          ? `Claude · ${fmtDate(m.created_at)}`
+          : `${fmtDate(m.created_at)}${m.twitter ? ' · ' + m.twitter : ''}`;
         const body = document.createElement('div');
         body.textContent = m.body;
         div.appendChild(meta);
@@ -341,22 +368,36 @@
     document.getElementById('chatForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const status = document.getElementById('chatStatus');
+      const btn = e.target.querySelector('button[type="submit"]');
       status.textContent = '';
+      status.className = 'status';
       const payload = {
         body: document.getElementById('chatBody').value,
         twitter: document.getElementById('chatTwitter').value || null,
       };
+      btn.disabled = true;
+      status.textContent = 'Sending…';
       const r = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      const data = await r.json().catch(() => ({}));
+      btn.disabled = false;
       if (!r.ok) {
-        status.textContent = (await r.json().catch(() => ({}))).error || 'Could not send';
+        status.textContent = data.error || 'Could not send';
         return;
       }
       status.className = 'status ok';
-      status.textContent = 'Posted.';
+      if (data.assistant) {
+        status.textContent = 'Posted — Claude replied.';
+      } else if (data.aiEnabled && data.assistantError) {
+        status.textContent = 'Posted; Claude error: ' + data.assistantError;
+      } else if (!data.aiEnabled) {
+        status.textContent = 'Posted (Claude disabled — no API key).';
+      } else {
+        status.textContent = 'Posted.';
+      }
       document.getElementById('chatBody').value = '';
       await loadChat();
     });
@@ -369,6 +410,7 @@
       loadFeedback();
     });
 
+    loadChatConfig().catch(console.error);
     loadSummary().catch(console.error);
     loadFeedback().catch(console.error);
     loadChat().catch(console.error);

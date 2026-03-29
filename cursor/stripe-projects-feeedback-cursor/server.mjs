@@ -197,17 +197,60 @@ app.get('/api/feedback', (req, res) => {
   res.json({ page, limit, total, rows });
 });
 
+function truncate(s, n) {
+  const t = String(s).replace(/\s+/g, ' ').trim();
+  return t.length <= n ? t : `${t.slice(0, n)}…`;
+}
+
+function feedbackContextBlock() {
+  const rows = db
+    .prepare(
+      `SELECT message, twitter, agent_used FROM feedback ORDER BY datetime(created_at) DESC LIMIT 50`
+    )
+    .all();
+  if (!rows.length) {
+    return 'No feedback submissions yet.';
+  }
+  return rows
+    .map((r, i) => {
+      const who = [r.twitter ? `X: ${r.twitter}` : null, r.agent_used ? `agent: ${r.agent_used}` : null]
+        .filter(Boolean)
+        .join(' · ');
+      return `${i + 1}. ${truncate(r.message, 450)}${who ? ` (${who})` : ''}`;
+    })
+    .join('\n');
+}
+
+function anthropicMessagesFromHistory(rows) {
+  const out = [];
+  for (const r of rows) {
+    const role = r.role === 'assistant' ? 'assistant' : 'user';
+    const text = String(r.body ?? '').trim();
+    if (!text) continue;
+    out.push({ role, content: text });
+  }
+  while (out.length && out[0].role === 'assistant') out.shift();
+  return out;
+}
+
+app.get('/api/chat/config', (_req, res) => {
+  res.json({
+    aiEnabled: Boolean(process.env.ANTHROPIC_API_KEY?.trim()),
+    model: ANTHROPIC_MODEL,
+  });
+});
+
 app.get('/api/chat', (req, res) => {
   const limit = Math.min(500, Math.max(1, parseInt(String(req.query.limit ?? '200'), 10) || 200));
   const rows = db
     .prepare(
-      `SELECT id, body, twitter, created_at FROM chat_message ORDER BY datetime(created_at) DESC LIMIT ?`
+      `SELECT id, body, twitter, created_at, role FROM chat_message ORDER BY datetime(created_at) DESC LIMIT ?`
     )
     .all(limit);
   res.json({ rows: rows.reverse() });
 });
 
-app.post('/api/chat', (req, res) => {
+app.post('/api/chat', async (req, res) => {
   const body = String(req.body?.body ?? '').trim();
   if (!body) {
     res.status(400).json({ error: 'body is required' });
@@ -215,8 +258,85 @@ app.post('/api/chat', (req, res) => {
   }
   const twitter = req.body?.twitter != null ? String(req.body.twitter).trim() || null : null;
   const created_at = new Date().toISOString();
-  const info = insertChat.run(body, twitter, created_at);
-  res.status(201).json({ id: info.lastInsertRowid, created_at });
+  const userInfo = insertChat.run(body, twitter, created_at, 'user');
+  const userRow = {
+    id: userInfo.lastInsertRowid,
+    body,
+    twitter,
+    created_at,
+    role: 'user',
+  };
+
+  const key = process.env.ANTHROPIC_API_KEY?.trim();
+  if (!key) {
+    res.status(201).json({
+      user: userRow,
+      assistant: null,
+      aiEnabled: false,
+    });
+    return;
+  }
+
+  const historyRows = db
+    .prepare(
+      `SELECT body, role FROM chat_message ORDER BY datetime(created_at) DESC LIMIT 32`
+    )
+    .all()
+    .reverse();
+
+  const messages = anthropicMessagesFromHistory(historyRows);
+  const system = `You are Claude, helping visitors discuss community feedback about Stripe Projects (CLI, providers, provisioning, docs at https://docs.stripe.com/projects).
+
+Ground your replies in the feedback excerpts below when relevant. You do not have private Stripe information; be honest about limits. Keep replies concise and conversational. If there is no related feedback, you may still discuss Stripe Projects generally.
+
+## Recent feedback submissions (newest listed first)
+${feedbackContextBlock()}`;
+
+  try {
+    const client = new Anthropic({ apiKey: key });
+    const resp = await client.messages.create({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 2048,
+      system,
+      messages,
+    });
+    const text = (resp.content ?? [])
+      .filter((b) => b.type === 'text')
+      .map((b) => b.text)
+      .join('\n')
+      .trim();
+    if (!text) {
+      res.status(201).json({
+        user: userRow,
+        assistant: null,
+        aiEnabled: true,
+        assistantError: 'Empty model response',
+      });
+      return;
+    }
+    const aiCreated = new Date().toISOString();
+    const aiInfo = insertChat.run(text, null, aiCreated, 'assistant');
+    res.status(201).json({
+      user: userRow,
+      assistant: {
+        id: aiInfo.lastInsertRowid,
+        body: text,
+        twitter: null,
+        created_at: aiCreated,
+        role: 'assistant',
+      },
+      aiEnabled: true,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error('Anthropic chat error:', msg);
+    res.status(201).json({
+      user: userRow,
+      assistant: null,
+      aiEnabled: true,
+      assistantError: msg,
+    });
+  }
 });
 
 const publicDir = path.join(__dirname, 'public');
