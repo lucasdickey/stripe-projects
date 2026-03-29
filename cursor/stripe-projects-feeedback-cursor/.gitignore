@@ -1,6 +1,7 @@
-.projects/cache
-.projects/vault
-.env
 node_modules/
 data/*.sqlite
 data/*.sqlite-*
+
+.projects/cache
+.projects/vault
+.env

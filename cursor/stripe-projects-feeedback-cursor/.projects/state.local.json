@@ -1,12 +1,130 @@
 {
   "version": 1,
   "project": {
-    "merchantId": "acct_1RlzywDvWdnpmOST",
+    "initializedAt": "2026-03-29T00:56:14.210Z",
     "merchantDisplayName": null,
+    "merchantId": "acct_1RlzywDvWdnpmOST",
     "projectId": "project_61UPVbZAPRxVAvu8K16SvNwISGSQOMCtRf2PtuBcm43s",
-    "projectName": "stripe-projects-feeedback-cursor",
-    "initializedAt": "2026-03-29T00:56:14.210Z"
+    "projectName": "stripe-projects-feeedback-cursor"
   },
-  "providers": {},
-  "resources": {}
+  "providers": {
+    "chroma": {
+      "accountRequestId": "fprvcnn_61UPVaHJCYs536hAK16SvNwISGSQOMCtRf2PtuBcmMj2",
+      "linkedAt": "2026-03-29T00:54:53.991Z",
+      "providerId": "prvdr_61UIblE5uGbHmAZLq5BgG",
+      "providerName": "Chroma",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T00:54:53.991Z",
+      "status": "complete"
+    },
+    "clerk": {
+      "accountRequestId": "facctrq_61UPVuJ1nfYGb9Ikv16SvNwISGSQOMCtRf2PtuBcmOCe",
+      "linkedAt": "2026-03-29T01:15:37.617Z",
+      "providerId": "prvdr_61UGOeSW4e0T9Etwn537w",
+      "providerName": "Clerk",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:15:37.617Z",
+      "status": "complete"
+    },
+    "posthog": {
+      "accountRequestId": "fprvcnn_61UPVaLXtvn7eyU4I16SvNwISGSQOMCtRf2PtuBcmQuO",
+      "linkedAt": "2026-03-29T00:54:57.451Z",
+      "providerId": "prvdr_61UGMHNyOleb3A55m5Pg8",
+      "providerName": "PostHog",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T00:54:57.451Z",
+      "status": "complete"
+    },
+    "railway": {
+      "accountRequestId": "fprvcnn_61UPVYEOuU8PEmMUF16SvNwISGSQOMCtRf2PtuBcm68e",
+      "linkedAt": "2026-03-18T18:09:55.174Z",
+      "providerId": "prvdr_61UK2uWsoydL7tUBp57Fg",
+      "providerName": "Railway",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-18T18:09:55.174Z",
+      "status": "complete"
+    },
+    "runloop": {
+      "accountRequestId": "facctrq_61UPVxio0VOVdzGlv16SvNwISGSQOMCtRf2PtuBcmDwG",
+      "linkedAt": "2026-03-29T01:19:07.390Z",
+      "providerId": "prvdr_61UGhvzdmhefqNXre5WIS",
+      "providerName": "Runloop",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:19:07.390Z",
+      "status": "complete"
+    },
+    "turso": {
+      "accountRequestId": "fprvcnn_61UPVnMKWLwei9fZs16SvNwISGSQOMCtRf2PtuBcmGqO",
+      "linkedAt": "2026-03-29T01:08:24.724Z",
+      "providerId": "prvdr_61UGLtrGjcXK8rTq15RWq",
+      "providerName": "Turso",
+      "redirectUrl": null,
+      "requestedAt": "2026-03-29T01:08:24.724Z",
+      "status": "complete"
+    }
+  },
+  "resources": {
+    "chroma-feedback-vec": {
+      "configuration": {
+        "name": "stripe_feedback_vec"
+      },
+      "createdAt": "2026-03-29T01:15:53.173Z",
+      "lastRevealedAt": "2026-03-29T01:15:53.403Z",
+      "lastStatus": "complete",
+      "name": "chroma-feedback-vec",
+      "providerId": "prvdr_61UIblE5uGbHmAZLq5BgG",
+      "providerName": "Chroma",
+      "resourceId": "fres_61UPVubY7QG9qQcKp16SvNwISGSQOMCtRf2PtuBcm9A8",
+      "serviceId": "database"
+    },
+    "clerk-feedback": {
+      "configuration": {
+        "app_name": "Stripe Projects Feedback"
+      },
+      "createdAt": "2026-03-29T01:15:39.274Z",
+      "lastRevealedAt": "2026-03-29T01:15:39.381Z",
+      "lastStatus": "complete",
+      "name": "clerk-feedback",
+      "providerId": "prvdr_61UGOeSW4e0T9Etwn537w",
+      "providerName": "Clerk",
+      "resourceId": "fres_61UPVuNf7RJWIdiKW16SvNwISGSQOMCtRf2PtuBcm9tg",
+      "serviceId": "auth"
+    },
+    "posthog-feedback": {
+      "configuration": {},
+      "createdAt": "2026-03-29T01:15:31.352Z",
+      "lastRevealedAt": "2026-03-29T01:15:31.453Z",
+      "lastStatus": "complete",
+      "name": "posthog-feedback",
+      "providerId": "prvdr_61UGMHNyOleb3A55m5Pg8",
+      "providerName": "PostHog",
+      "resourceId": "fres_61UPVuFniKU7UeCPl16SvNwISGSQOMCtRf2PtuBcm2Rs",
+      "serviceId": "analytics"
+    },
+    "Railway/hosting": {
+      "configuration": {},
+      "createdAt": "2026-03-29T01:15:59.691Z",
+      "lastRevealedAt": null,
+      "lastStatus": "errored",
+      "name": "Railway/hosting",
+      "providerId": "prvdr_61UK2uWsoydL7tUBp57Fg",
+      "providerName": "Railway",
+      "resourceId": "fres_61UPVuh3j04AOeSUy16SvNwISGSQOMCtRf2PtuBcm1TU",
+      "serviceId": "hosting"
+    },
+    "turso-feedback-db": {
+      "configuration": {
+        "name": "stripe-feedback-db",
+        "location": "aws-us-east-1"
+      },
+      "createdAt": "2026-03-29T01:15:45.963Z",
+      "lastRevealedAt": "2026-03-29T01:15:46.109Z",
+      "lastStatus": "complete",
+      "name": "turso-feedback-db",
+      "providerId": "prvdr_61UGLtrGjcXK8rTq15RWq",
+      "providerName": "Turso",
+      "resourceId": "fres_61UPVuTOfkbz3OQ7m16SvNwISGSQOMCtRf2PtuBcmY2S",
+      "serviceId": "database"
+    }
+  }
 }

@@ -1,5 +1,50 @@
 {
   "version": 1,
-  "providers": {},
-  "resources": {}
+  "providers": {
+    "chroma": {
+      "name": "Chroma"
+    },
+    "clerk": {
+      "name": "Clerk"
+    },
+    "posthog": {
+      "name": "PostHog"
+    },
+    "railway": {
+      "name": "Railway"
+    },
+    "runloop": {
+      "name": "Runloop"
+    },
+    "turso": {
+      "name": "Turso"
+    }
+  },
+  "resources": {
+    "chroma-feedback-vec": {
+      "name": "chroma-feedback-vec",
+      "providerName": "Chroma",
+      "serviceId": "database"
+    },
+    "clerk-feedback": {
+      "name": "clerk-feedback",
+      "providerName": "Clerk",
+      "serviceId": "auth"
+    },
+    "posthog-feedback": {
+      "name": "posthog-feedback",
+      "providerName": "PostHog",
+      "serviceId": "analytics"
+    },
+    "Railway/hosting": {
+      "name": "Railway/hosting",
+      "providerName": "Railway",
+      "serviceId": "hosting"
+    },
+    "turso-feedback-db": {
+      "name": "turso-feedback-db",
+      "providerName": "Turso",
+      "serviceId": "database"
+    }
+  }
 }
