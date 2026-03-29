@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "project": {
+    "merchantId": "acct_1RlzywDvWdnpmOST",
+    "merchantDisplayName": null,
+    "projectId": "project_61UPVWyYFyOMuZ6rs16SvNwISGSQOMCtRf2PtuBcmOBM",
+    "projectName": "gemini-test",
+    "initializedAt": "2026-03-29T00:51:28.609Z"
+  },
+  "providers": {},
+  "resources": {}
+}
