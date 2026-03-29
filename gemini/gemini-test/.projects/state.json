@@ -9,6 +9,11 @@
     }
   },
   "resources": {
+    "railway-plan": {
+      "name": "railway-plan",
+      "providerName": "Railway",
+      "serviceId": "free"
+    },
     "turso-database": {
       "name": "turso-database",
       "providerName": "Turso",
