@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDb } from './lib/db.mjs';
@@ -11,6 +12,15 @@ import {
 } from './lib/llm.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/** Vercel bundles the API under .vercel/output; static files live at project root (cwd). */
+function resolvePublicDir() {
+  const nextToApp = path.join(__dirname, 'public');
+  if (fs.existsSync(nextToApp)) return nextToApp;
+  const cwdPublic = path.join(process.cwd(), 'public');
+  if (fs.existsSync(cwdPublic)) return cwdPublic;
+  return nextToApp;
+}
 
 function truncate(s, n) {
   const t = String(s).replace(/\s+/g, ' ').trim();
@@ -255,10 +265,16 @@ ${ctx}`;
     }
   });
 
-  const publicDir = path.join(__dirname, 'public');
+  const publicDir = resolvePublicDir();
   app.use(express.static(publicDir));
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(publicDir, 'index.html'));
+  app.get('*', (req, res) => {
+    const indexPath = path.join(publicDir, 'index.html');
+    if (!fs.existsSync(indexPath)) {
+      console.error('Missing index.html at', indexPath, 'cwd=', process.cwd(), '__dirname=', __dirname);
+      res.status(500).type('text').send('Server misconfiguration: public/index.html not found.');
+      return;
+    }
+    res.sendFile(indexPath);
   });
 
   return app;

@@ -1,10 +1,8 @@
-import { MongoClient, Db, Collection } from 'mongodb';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/feedback';
-const DB_NAME = 'feedback_db';
+// In-memory database for Stripe Projects Feedback
+// Uses in-memory storage that works on Vercel
+// Can be replaced with Chroma, MongoDB, or Supabase later
 
 interface Feedback {
-  _id?: string;
   id: string;
   message: string;
   twitterHandle?: string;
@@ -13,41 +11,106 @@ interface Feedback {
   category?: string;
 }
 
-let cachedClient: MongoClient | null = null;
-let cachedDb: Db | null = null;
+interface Summary {
+  _id: string;
+  categories: Array<{
+    category: string;
+    description: string;
+    count: number;
+    examples: string[];
+  }>;
+  generatedAt: Date;
+  totalFeedback: number;
+}
 
-async function connectToDatabase() {
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
+// In-memory collections
+let feedbackItems: Feedback[] = [];
+let summaries: Summary[] = [];
+
+class FeedbackCollection {
+  async insertOne(doc: Feedback) {
+    feedbackItems.push(doc);
+    return { insertedId: doc.id };
   }
 
-  try {
-    const client = new MongoClient(MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000,
-    });
+  async find(filter: any = {}) {
+    return {
+      sort: (sort: any) => ({
+        skip: (n: number) => ({
+          limit: (limit: number) => ({
+            toArray: async () => {
+              let items = [...feedbackItems];
+              // Sort by createdAt descending if requested
+              if (sort.createdAt === -1) {
+                items.sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                );
+              }
+              return items.slice(n, n + limit);
+            },
+          }),
+        }),
+      }),
+    };
+  }
 
-    await client.connect();
-    const db = client.db(DB_NAME);
+  async countDocuments() {
+    return feedbackItems.length;
+  }
 
-    cachedClient = client;
-    cachedDb = db;
-
-    return { client, db };
-  } catch (error) {
-    console.error('Failed to connect to MongoDB:', error);
-    throw error;
+  async updateOne(filter: any, update: any) {
+    const item = feedbackItems.find((f) => f.id === filter.id);
+    if (item) {
+      Object.assign(item, update.$set);
+    }
   }
 }
 
-async function getFeedbackCollection(): Promise<Collection<Feedback>> {
-  const { db } = await connectToDatabase();
-  return db.collection<Feedback>('feedback');
+class SummaryCollection {
+  async findOne(filter: any) {
+    return summaries.find((s) => s._id === filter._id);
+  }
+
+  async updateOne(filter: any, update: any, options: any = {}) {
+    let doc = summaries.find((s) => s._id === filter._id);
+    if (!doc && options.upsert) {
+      doc = {
+        _id: filter._id,
+        categories: [],
+        generatedAt: new Date(),
+        totalFeedback: 0,
+      };
+      summaries.push(doc);
+    }
+    if (doc) {
+      Object.assign(doc, update.$set);
+    }
+  }
+
+  async find(filter: any = {}) {
+    return {
+      toArray: async () => summaries,
+    };
+  }
 }
 
-async function getSummaryCollection(): Promise<Collection> {
-  const { db } = await connectToDatabase();
-  return db.collection('summaries');
+async function getFeedbackCollection(): Promise<any> {
+  return new FeedbackCollection();
 }
 
-export { connectToDatabase, getFeedbackCollection, getSummaryCollection };
-export type { Feedback };
+async function getSummaryCollection(): Promise<any> {
+  return new SummaryCollection();
+}
+
+// Utility function to get all data (for debugging)
+async function getAllData() {
+  return {
+    feedback: feedbackItems,
+    summaries: summaries,
+  };
+}
+
+export { getFeedbackCollection, getSummaryCollection, getAllData };
+export type { Feedback, Summary };
